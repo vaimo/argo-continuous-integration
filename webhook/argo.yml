@@ -21,9 +21,12 @@ spec:
         git:
           repo: "{{workflow.parameters.repo}}"
           revision: "{{workflow.parameters.revision}}"
-          sshPrivateKeySecret:
-            name: bitbucket-creds
-            key: id_rsa
+          usernameSecret:
+            name: bitbucket-argo
+            key: username
+          passwordSecret:
+            name: bitbucket-argo
+            key: password
     metadata:
       labels:
         app: argo

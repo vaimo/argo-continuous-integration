@@ -29,7 +29,7 @@ func main() {
 		gitRevision, _ := jsonparser.GetString(buf.Bytes(), "push", "changes", "[0]", "new", "name")
         
         gitRepoName := strings.Split(gitRepo, "/")[1]
-        fullGitRepo := "git@bitbucket.org:" + gitRepo + ".git"
+		fullGitRepo := "https://bitbucket.org/" + gitRepo + ".git"
         timestamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 
         argoFilename := "argo" + timestamp + ".yml"
