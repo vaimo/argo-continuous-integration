@@ -3,13 +3,14 @@ package main
 import (
     "bytes"
     "fmt"
-    "github.com/buger/jsonparser"
-    "github.com/gin-gonic/gin"
     "io/ioutil"
     "os/exec"
     "strconv"
     "strings"
     "time"
+
+	"github.com/buger/jsonparser"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -24,8 +25,8 @@ func main() {
         buf := new(bytes.Buffer)
         _, _ = buf.ReadFrom(c.Request.Body)
         
-        gitRepo,_ := jsonparser.GetString(buf.Bytes(), "repository", "full_name")
-        gitRevision,_ := jsonparser.GetString(buf.Bytes(), "push", "changes", "[0]", "new", "name")
+		gitRepo, _ := jsonparser.GetString(buf.Bytes(), "repository", "full_name")
+		gitRevision, _ := jsonparser.GetString(buf.Bytes(), "push", "changes", "[0]", "new", "name")
         
         gitRepoName := strings.Split(gitRepo, "/")[1]
         fullGitRepo := "git@bitbucket.org:" + gitRepo + ".git"
@@ -39,7 +40,7 @@ func main() {
         output := bytes.Replace(temp2, []byte("<git_revision>"), []byte(gitRevision), -1)
         _ = ioutil.WriteFile(argoFilename, output, 0666)
 
-        commandOutput, err := exec.Command("sh", "-c", "./argo submit " + argoFilename).CombinedOutput()
+		commandOutput, err := exec.Command("sh", "-c", "./argo submit "+argoFilename).CombinedOutput()
         if err != nil {
             fmt.Printf("Accepted webhook request, did NOT start Argo workflow: git_repo=%q,git_revision=%q, because of: %q\n", gitRepo, gitRevision, string(err.Error()))
         } else {
